@@ -1,16 +1,63 @@
-# React + Vite
+# 🌦️ Weather App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean and responsive weather forecasting app built with **React**, **Vite**, **Tailwind CSS**, and **FastAPI**.  
+It fetches live weather data based on user input or current location.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+- Search weather by city or use your current location 🌍  
+- Displays temperature, humidity, pressure, and wind speed 🌡️  
+- Animated weather icons and dynamic backgrounds ☁️  
+- Fully responsive (works on mobile, tablet, and desktop) 📱  
+- FastAPI backend for API integration ⚡  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🧰 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Frontend:** React, Vite, Tailwind CSS  
+**Backend:** FastAPI (Python)  
+**API Source:** OpenWeatherMap (or whichever you used)  
+**Version Control:** Git & GitHub  
+
+---
+
+## 📁 Project Structure
+
+weather-app/
+│
+├── backend/
+│ ├── main.py
+│ ├── requirements.txt
+│
+├── frontend/
+│ ├── src/
+│ ├── package.json
+│
+└── README.md
+
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/Divinstar/Weather-App.git
+cd Weather-App
+
+2️⃣ Setup Backend
+cd backend
+python -m venv venv
+venv\Scripts\activate   # or source venv/bin/activate on Mac/Linux
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+3️⃣ Setup Frontend
+cd ../frontend
+npm install
+npm run dev
+
+
