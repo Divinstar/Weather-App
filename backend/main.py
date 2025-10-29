@@ -8,7 +8,7 @@ app = FastAPI()
 # CORS middleware to allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[*],  # Vite default port
+    allow_origins=["*"],  # Vite default port
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
