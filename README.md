@@ -19,7 +19,7 @@ It fetches live weather data based on user input or current location.
 
 **Frontend:** React, Vite, Tailwind CSS  
 **Backend:** FastAPI (Python)  
-**API Source:** OpenWeatherMap (or whichever you used)  
+**API Source:** Open Metro API  
 **Version Control:** Git & GitHub  
 
 ---
