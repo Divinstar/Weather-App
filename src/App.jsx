@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Search, MapPin, Cloud, Sun, CloudRain, CloudSnow, Wind, Droplets, Eye, Gauge, Loader } from 'lucide-react';
 
+// ============================================
+// API CONFIGURATION AND WEATHER SERVICE
+// ============================================
 // API configuration
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://weather-app-production-c740.up.railway.app';
 
 const weatherAPI = {
   // Get weather by city name
@@ -34,7 +37,13 @@ const weatherAPI = {
   }
 };
 
+// ============================================
+// MAIN WEATHER APP COMPONENT
+// ============================================
 export default function WeatherApp() {
+  // ============================================
+  // STATE MANAGEMENT
+  // ============================================
   const [city, setCity] = useState('');
   const [isSearched, setIsSearched] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
@@ -42,6 +51,9 @@ export default function WeatherApp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // ============================================
+  // WEATHER ICON MAPPING - Returns appropriate icon based on WMO weather code
+  // ============================================
   const getWeatherIcon = (code, size = 'w-16 h-16') => {
     // WMO Weather codes
     if (code === 0) return <Sun className={`${size} text-yellow-400`} />;
@@ -51,6 +63,9 @@ export default function WeatherApp() {
     return <Wind className={`${size} text-gray-400`} />;
   };
 
+  // ============================================
+  // WEATHER DESCRIPTION MAPPING - Converts WMO codes to human-readable descriptions
+  // ============================================
   const getWeatherDescription = (code) => {
     const descriptions = {
       0: 'Clear sky',
@@ -81,6 +96,9 @@ export default function WeatherApp() {
     return descriptions[code] || 'Unknown';
   };
 
+  // ============================================
+  // FETCH WEATHER BY COORDINATES - Gets weather data using latitude and longitude
+  // ============================================
   const fetchWeatherData = async (latitude, longitude, cityName) => {
     setLoading(true);
     setError('');
@@ -103,6 +121,9 @@ export default function WeatherApp() {
     }
   };
 
+  // ============================================
+  // SEARCH CITY - Fetches weather data by city name
+  // ============================================
   const searchCity = async (searchQuery) => {
     setLoading(true);
     setError('');
@@ -125,18 +146,27 @@ export default function WeatherApp() {
     }
   };
 
+  // ============================================
+  // SEARCH BUTTON HANDLER
+  // ============================================
   const handleSearch = () => {
     if (city.trim()) {
       searchCity(city.trim());
     }
   };
 
+  // ============================================
+  // KEYBOARD ENTER KEY HANDLER FOR SEARCH
+  // ============================================
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
   };
 
+  // ============================================
+  // GEOLOCATION HANDLER - Uses browser's geolocation API
+  // ============================================
   const handleUseLocation = () => {
     if (navigator.geolocation) {
       setLoading(true);
@@ -158,6 +188,9 @@ export default function WeatherApp() {
     }
   };
 
+  // ============================================
+  // DATE/TIME FORMATTING UTILITIES
+  // ============================================
   const getCurrentTime = () => {
     return new Date().toLocaleString('en-US', {
       weekday: 'long',
@@ -181,10 +214,13 @@ export default function WeatherApp() {
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   };
 
-  // Landing Page
+  // ============================================
+  // LANDING PAGE - Initial search interface
+  // ============================================
   if (!isSearched) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#1e3a5f] to-[#0f172a] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+        {/* Background animated weather icons */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <Cloud className="absolute top-20 left-10 text-white/10 w-24 h-24 sm:w-32 sm:h-32 animate-float" />
           <Sun className="absolute top-40 right-20 text-yellow-400/20 w-32 h-32 sm:w-40 sm:h-40 animate-pulse" />
@@ -192,6 +228,7 @@ export default function WeatherApp() {
         </div>
 
         <div className="relative z-10 w-full max-w-2xl">
+          {/* Header section */}
           <div className="text-center mb-8 sm:mb-12 animate-fade-in">
             <h1 className="text-4xl sm:text-6xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg">
               Weather Now
@@ -201,7 +238,9 @@ export default function WeatherApp() {
             </p>
           </div>
 
+          {/* Search card */}
           <div className="backdrop-blur-lg bg-[#1e3a5f]/60 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20 animate-slide-up">
+            {/* City search input */}
             <div className="relative">
               <Search className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5 sm:w-6 sm:h-6" />
               <input
@@ -221,6 +260,7 @@ export default function WeatherApp() {
               </button>
             </div>
 
+            {/* Use location button */}
             <div className="mt-6 flex justify-center">
               <button
                 onClick={handleUseLocation}
@@ -232,6 +272,7 @@ export default function WeatherApp() {
               </button>
             </div>
 
+            {/* Error message display */}
             {error && (
               <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-xl text-white text-center text-sm">
                 {error}
@@ -240,6 +281,7 @@ export default function WeatherApp() {
           </div>
         </div>
 
+        {/* Custom CSS animations */}
         <style>{`
           @keyframes float {
             0%, 100% { transform: translateY(0px); }
@@ -266,10 +308,14 @@ export default function WeatherApp() {
     );
   }
 
-  // Weather Results Page
+  // ============================================
+  // WEATHER RESULTS PAGE - Displays weather data after search
+  // ============================================
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#1e3a5f] to-[#0f172a] p-4 sm:p-6">
-      {/* Search Bar at Top */}
+      {/* ============================================
+          TOP SEARCH BAR - Persistent search interface
+          ============================================ */}
       <div className="max-w-7xl mx-auto mb-6">
         <div className="backdrop-blur-lg bg-[#1e3a5f]/60 rounded-2xl p-3 sm:p-4 shadow-lg border border-white/20 flex gap-2">
           <div className="relative flex-1">
@@ -300,23 +346,32 @@ export default function WeatherApp() {
         </div>
       </div>
 
+      {/* ============================================
+          LOADING STATE
+          ============================================ */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader className="w-12 h-12 text-white animate-spin" />
         </div>
       ) : weatherData ? (
         <div className="max-w-7xl mx-auto">
-          {/* Main Layout: 70/30 split on desktop, stacked on mobile */}
+          {/* ============================================
+              MAIN LAYOUT - 70/30 split (left/right)
+              ============================================ */}
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left Side - Main Weather Card (70%) */}
+            {/* ============================================
+                LEFT SIDE - Main weather information (70%)
+                ============================================ */}
             <div className="flex-1 lg:w-[70%]">
-              {/* Current Weather Card */}
+              {/* Current weather card */}
               <div className="backdrop-blur-lg bg-[#1e3a5f]/60 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20 mb-6">
                 <div className="text-white">
+                  {/* Location and time header */}
                   <h2 className="text-3xl sm:text-4xl font-bold mb-2">{weatherData.city}</h2>
                   <p className="text-white/80 text-sm sm:text-base mb-6">{getCurrentTime()}</p>
                   
                   <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
+                    {/* Main temperature display with icon */}
                     <div className="flex items-center gap-4">
                       {getWeatherIcon(weatherData.current.weather_code, 'w-24 h-24 sm:w-32 sm:h-32')}
                       <div>
@@ -329,6 +384,7 @@ export default function WeatherApp() {
                       </div>
                     </div>
                     
+                    {/* Weather details grid - Humidity, Wind, Visibility, Feels Like */}
                     <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
                       <div className="backdrop-blur bg-white/10 rounded-2xl p-4 border border-white/20">
                         <div className="flex items-center gap-2 mb-2">
@@ -366,7 +422,9 @@ export default function WeatherApp() {
                 </div>
               </div>
 
-              {/* Hourly Forecast */}
+              {/* ============================================
+                  HOURLY FORECAST - Shows today's weather by hour
+                  ============================================ */}
               <div className="backdrop-blur-lg bg-[#1e3a5f]/60 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20">
                 <h3 className="text-2xl font-bold text-white mb-4">Today's Forecast</h3>
                 <div className="overflow-x-auto">
@@ -396,7 +454,9 @@ export default function WeatherApp() {
               </div>
             </div>
 
-            {/* Right Side - Daily Forecast (30%) */}
+            {/* ============================================
+                RIGHT SIDE - 7-day forecast (30%)
+                ============================================ */}
             <div className="lg:w-[30%]">
               <div className="backdrop-blur-lg bg-[#1e3a5f]/60 rounded-3xl p-6 shadow-2xl border border-white/20 sticky top-6">
                 <h3 className="text-2xl font-bold text-white mb-4">7-Day Forecast</h3>
